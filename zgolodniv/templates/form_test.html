@@ -1,0 +1,104 @@
+{% from "_forms.html" import render_field, render_checkbox_field, render_inline_field %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Охуенный рекомендательный сервис</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=cyrillic,latin' rel='stylesheet' type='text/css'>
+    <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
+    {% block scripts %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-offset-2 col-md-6" id="mainForm">
+        <form class="form-horizontal" method="POST" action="/">
+          <h1>Общая информация</h1>
+          {{ form.hidden_tag() }}
+          {{ render_field(form.recipie) }}
+          {{ render_field(form.preamble) }}
+          {{ render_field(form.image) }}
+          <hr>
+          <div id="stages">
+            <h3>Первый этап</h3>
+            <h4>Продукты для первого этапа</h4>
+            <div id="ingrs">
+              {{ render_field(form.stages[0].ingrs[0].ingr) }}
+              {{ render_field(form.stages[0].ingrs[0].measure) }}
+              {{ render_field(form.stages[0].ingrs[0].qty) }}
+              {{ render_field(form.stages[0].ingrs[0].tags) }}
+              {{ render_checkbox_field(form.stages[0].ingrs[0].meat) }}
+              <hr>
+            </div>
+            <button id="addIngr" class="btn-default btn" onclick=#>Добавить ингридиент</button>
+            <hr>
+            {{ render_field(form.stages[0].text) }}
+            {{ render_field(form.stages[0].image) }}
+            <button id="addStage" class="btn-default btn" onclick=#>Добавить этап</button>
+          </div>
+          <hr>
+          <button type="submit" class="btn-default btn">Отправить</button>
+        </form>
+      </div>
+    </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+    $( function() {
+      var stageNum = 0
+      var ingrNum = 0
+      $("#addIngr").click(function(e) {
+        e.preventDefault()
+        $("#ingrs").append(
+          "  <div class='form-group  '>" +
+          "    <label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-ingr' class='col-md-2 control-label'><label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-ingr'>Название ингредиента</label></label>" +
+          "    <div class='col-md-8'>" +
+          "     <input class='form-control' id='stages-" + stageNum + "-ingrs-" + ingrNum + "-ingr' name='stages-" + stageNum + "-ingrs-" + ingrNum + "-ingr' type='text' value=''>" +
+          "   </div>" +
+          " </div>" +
+          " <div class='form-group  '>" +
+          "   <label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-measure' class='col-md-2 control-label'><label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-measure'>В чём измеряется?</label></label>" +
+          "   <div class='col-md-8'>" +
+          "     <input class='form-control' id='stages-" + stageNum + "-ingrs-" + ingrNum + "-measure' name='stages-" + stageNum + "-ingrs-" + ingrNum + "-measure' type='text' value=''>" +
+          "   </div>" +
+          " </div>" +
+          "  <div class='form-group  '>" +
+          "    <label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-qty' class='col-md-2 control-label'><label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-qty'>Количество</label></label>" +
+          "    <div class='col-md-8'>" +
+          "      <input class='form-control' id='stages-" + stageNum + "-ingrs-" + ingrNum + "-qty' name='stages-" + stageNum + "-ingrs-" + ingrNum + "-qty' type='text' value=''>" +
+          "    </div>" +
+          "  </div>" +
+          "  <div class='form-group  '>" +
+          "    <label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-tags' class='col-md-2 control-label'><label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-tags'>Тэги</label></label>" +
+          "    <div class='col-md-8'>" +
+          "      <input class='form-control' id='stages-" + stageNum + "-ingrs-" + ingrNum + "-tags' name='stages-" + stageNum + "-ingrs-" + ingrNum + "-tags' type='text' value=''>" +
+          "    </div>" +
+          "  </div>" +
+          "  <div class='form-group '>" +
+          "    <div class='col-md-offset-2 col-md-8'>" +
+          "      <div class='checkbox'>" +
+          "        <label>" +
+          "          <input id='stages-" + stageNum + "-ingrs-" + ingrNum + "-meat' name='stages-" + stageNum + "-ingrs-" + ingrNum + "-meat' type='checkbox' value='y'> <label for='stages-" + stageNum + "-ingrs-" + ingrNum + "-meat'>Мясо?</label>" +
+          "        </label>" +
+          "      </div>" +
+          "    </div>" +
+          "  </div>" +
+          "<hr>"
+        )
+        ingrNum++
+      })
+      $("#addStage").click ( function(e) {
+        e.preventDefault()
+        $("#mainForm").append(
+          "<hr><div class='form-group'><label for='stages-" + stageNum + "-text' class='col-md-4 control-label'>Описание этапа</label>" +
+          "<div class='col-md-8'><textarea class='form-control' id='stages-" + stageNum + "-text' name='stages-" + stageNum + "-text'></textarea></div>" +
+          "</div>"
+        )
+        stageNum++
+      })
+    })
+  </script>
+  </body>
+</html>

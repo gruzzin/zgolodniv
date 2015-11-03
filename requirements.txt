@@ -1,0 +1,7 @@
+flask
+flask-wtf
+flask-security
+flask-mongoengine
+flask-script
+python-dateutil
+py-bcrypt
